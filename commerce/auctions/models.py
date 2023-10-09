@@ -9,7 +9,7 @@ class User(AbstractUser):
 
 class Listing(models.Model):
     title = models.CharField(max_length=64)
-    description = models.CharField(max_length=100)
+    description = models.TextField(null=True)
     starting_bid = models.DecimalField(max_digits=12, decimal_places=2)
     date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
     image = models.ImageField(
@@ -19,19 +19,20 @@ class Listing(models.Model):
 
 
 class Bid(models.Model):
-    bidder = models.FoerignKey(
-        'User', on_delete=models.CASCADE, related_name='bids')
+    bidder = models.ForeignKey(
+        'User', on_delete=models.CASCADE, null=True, related_name='bids')
     listing = models.ForeignKey(
-        'Listing', on_delete=models.CASCADE, related_name='listings')
-    bid_amount = models.DecimalField(max_digits=12, decimal_places=2)
+        'Listing', on_delete=models.CASCADE, null=True, related_name='bids')
+    bid_amount = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00)
 
 
 class Comment(models.Model):
     bidder = models.ForeignKey(
-        'User', on_delete=models.CASCADE, related_name='comments')
+        'User', on_delete=models.CASCADE, null=True, related_name='comments')
     listing = models.ForeignKey(
-        'Listing', on_delete=models.CASCADE, related_name='listings')
-    comment = models.TextField()
+        'Listing', on_delete=models.CASCADE, null=True, related_name='comments')
+    comment = models.TextField(null=True)
 
 
 class Category(models.Model):
