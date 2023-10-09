@@ -121,6 +121,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+# Media files
 MEDIA_ROOT = '/home/user/auctions/media/'
 
 MEDIA_URL = '/media/'
