@@ -16,6 +16,7 @@ class Listing(models.Model):
         upload_to='listings/', height_field=None, width_field=None, max_length=100)
     category = models.ForeignKey(
         'Category', on_delete=models.SET_NULL, null=True, related_name='listings')
+    is_active = models.BooleanField(default=True)
 
 
 class Bid(models.Model):
