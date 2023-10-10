@@ -36,3 +36,8 @@ body {
     padding: 0;
     margin: 0;
 }
+
+#button-buffer {
+    width: 20%;
+    margin-right: 10px;
+}
