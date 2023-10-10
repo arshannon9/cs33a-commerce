@@ -4,7 +4,8 @@ from PIL import Image
 
 
 class User(AbstractUser):
-    pass
+    watchlist = models.ManyToManyField(
+        'Listing', blank=True, related_name="users")
 
 
 class Listing(models.Model):
@@ -44,10 +45,3 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Watchlist(models.Model):
-    user = models.ForeignKey(
-        'User', on_delete=models.CASCADE, null=True, related_name='watchlist')
-    listing = models.ForeignKey(
-        'Listing', on_delete=models.CASCADE, null=True, related_name='watchlist')

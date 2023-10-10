@@ -42,6 +42,15 @@ li .container:hover {
     font-size: 0.85em;
 }
 
+#listing-image {
+    margin: 15px;
+}
+
+a.listing-link {
+    text-decoration: none;
+    color: black;
+}
+
 .listing-thumbnail {
     display: block;
     max-width: 200px;

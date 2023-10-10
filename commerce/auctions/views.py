@@ -88,3 +88,13 @@ def create_listing(request):
 def listing_detail(request, id):
     listing = get_object_or_404(Listing, id=id)
     return render(request, 'auctions/listing_detail.html', {'listing': listing})
+
+
+@login_required
+def toggle_watchlist(request, id):
+    listing = get_object_or_404(Listing, id=id)
+    if listing in request.user.watchlist.all():
+        request.user.watchlist.remove(listing)
+    else:
+        request.user.watchlist.add(listing)
+    return HttpResponseRedirect(reverse('listing_detail', args=[id]))
