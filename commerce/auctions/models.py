@@ -10,7 +10,10 @@ class User(AbstractUser):
 class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.TextField(null=True)
-    starting_bid = models.DecimalField(max_digits=12, decimal_places=2)
+    starting_bid = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00)
+    current_price = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00)
     date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
     image = models.ImageField(
         upload_to='listings/', height_field=None, width_field=None, max_length=100)

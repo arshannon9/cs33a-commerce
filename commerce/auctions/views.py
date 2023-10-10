@@ -9,7 +9,8 @@ from auctions.forms import ListingForm
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    active_listings = Listing.objects.filter(is_active=True)
+    return render(request, "auctions/index.html", {"listings": listings})
 
 
 def login_view(request):
