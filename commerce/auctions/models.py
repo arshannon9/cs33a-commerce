@@ -44,3 +44,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(
+        'User', on_delete=models.CASCADE, null=True, related_name='watchlist')
+    listing = models.ForeignKey(
+        'Listing', on_delete=models.CASCADE, null=True, related_name='watchlist')
