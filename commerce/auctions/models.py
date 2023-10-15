@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from PIL import Image
 
 
 class User(AbstractUser):
@@ -16,13 +15,15 @@ class Listing(models.Model):
     current_price = models.DecimalField(
         max_digits=12, decimal_places=2, default=0.00)
     date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
-    image = models.ImageField(
-        upload_to='listings/', height_field=None, width_field=None, max_length=100)
+    image = models.URLField(
+        null=True, blank=True)
     category = models.ForeignKey(
         'Category', on_delete=models.SET_NULL, null=True, related_name='listings')
     is_active = models.BooleanField(default=True)
     listing_owner = models.ForeignKey(
         'User', on_delete=models.CASCADE, null=True, related_name='listings')
+    winner = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class Bid(models.Model):
@@ -35,7 +36,7 @@ class Bid(models.Model):
 
 
 class Comment(models.Model):
-    bidder = models.ForeignKey(
+    commenter = models.ForeignKey(
         'User', on_delete=models.CASCADE, null=True, related_name='comments')
     listing = models.ForeignKey(
         'Listing', on_delete=models.CASCADE, null=True, related_name='comments')
