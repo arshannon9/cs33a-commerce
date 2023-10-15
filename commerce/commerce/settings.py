@@ -121,11 +121,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-# Media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-MEDIA_URL = '/media/'
-
 # Message storage
+# https://docs.djangoproject.com/en/4.2/ref/contrib/messages/
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

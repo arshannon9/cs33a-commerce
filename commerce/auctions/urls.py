@@ -19,4 +19,7 @@ urlpatterns = [
          views.close_auction, name="close_auction"),
     path("add_comment/<int:listing_id>", views.add_comment, name="add_comment"),
     path("watchlist", views.watchlist, name="watchlist"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("categories", views.categories, name="categories"),
+    path("category_view/<str:category_name>",
+         views.category_view, name="category_view"),
+]

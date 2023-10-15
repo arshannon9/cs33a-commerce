@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 
@@ -40,7 +40,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return render(request, "auctions/logged_out.html")
 
 
 def register(request):
@@ -192,3 +192,25 @@ def watchlist(request):
     user = request.user
     watchlist_listings = user.watchlist.all()
     return render(request, "auctions/watchlist.html", {"listings": watchlist_listings})
+
+
+@login_required
+def categories(request):
+    categories = Category.objects.all()
+    return render(request, "auctions/categories.html", {"categories": categories})
+
+
+@login_required
+def category_view(request, category_name):
+    # Get the category object by name or handle error if not found
+    category = get_object_or_404(Category, name=category_name)
+
+    # Filter listings based on the selected category
+    category_listings = Listing.objects.filter(
+        category=category)
+
+    context = {
+        'category_listings': category_listings,
+        'category_name': category_name,
+    }
+    return render(request, "auctions/category_view.html", context)
