@@ -4,18 +4,48 @@
     <div class="container">   
         <h2>Listing: {{ listing.title }}</h2>
         {% if listing in user.watchlist.all %}
-        <form method="POST" action="{% url 'toggle_watchlist' listing.id %}">
+        <form method="POST" action="{% url 'toggle_watchlist' id=listing.id %}">
             {% csrf_token %}
             <input type="submit" value="Remove from Watchlist">
         </form>
         {% else %}
-        <form method="POST" action="{% url 'toggle_watchlist' listing.id %}">
+        <form method="POST" action="{% url 'toggle_watchlist' id=listing.id %}">
             {% csrf_token %}
             <input type="submit" value="Add to Watchlist">
         </form>
         {% endif %} 
         <img id="listing-image" src="{{ listing.image.url }}" alt="{{ listing.title }}" width="400px">
         <p id="listing-description">{{ listing.description }}</p>
-        <p id="listing-price">Current price: ${{ listing.current_price }}</p>
+        <h3 id="listing-price">Current price: ${{ listing.current_price }}</h3>
+    </div>
+    <hr>
+    <div class="container" id="bid-container">
+        <h3>Bid:</h3>
+        <form method="POST" action="{% url 'make_bid' listing_id=listing.id user_id=user.id %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-currency-dollar"></i>
+                </span>
+                <input type="number" id="bid" name="bid_amount" placeholder="Enter dollar amount">
+                <input type="submit" value="Submit Bid">
+            </div>
+        </form>
+        <p id="bid-tracker">
+            {{ num_bids }} bid(s).
+            {% if is_highest %}
+                Your bid is the highest!
+            {% else %}
+                Your bid is not the highest.
+            {% endif %}
+        </p>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
     </div>
 {% endblock %}

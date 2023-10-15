@@ -1,5 +1,4 @@
 body {
-    font-family: 'Garamond', serif;
     font-size: 16px;
     padding: 10px;
 }
@@ -19,11 +18,20 @@ li .container:hover {
     cursor: pointer;
 }
 
+ul.messages {
+    list-style: none;
+}
+
 #active-listings,
 #create-listing-form {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
 }
 
 .form-group {
@@ -63,6 +71,11 @@ a.listing-link {
     list-style: none;
     padding-left: 0;
     margin: 0;
+}
+
+#bid-tracker {
+    color: gray;
+    font-size: 0.85em;
 }
 
 #button-buffer {

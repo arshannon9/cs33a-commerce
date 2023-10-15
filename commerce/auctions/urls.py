@@ -11,6 +11,8 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("create_listing", views.create_listing, name="create_listing"),
     path("listing_detail/<int:id>", views.listing_detail, name="listing_detail"),
-    path('toggle_watchlist/<int:id>',
-         views.toggle_watchlist, name='toggle_watchlist')
+    path("toggle_watchlist/<int:id>",
+         views.toggle_watchlist, name="toggle_watchlist"),
+    path("make_bid/<int:listing_id>/<int:user_id>/",
+         views.make_bid, name="make_bid")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

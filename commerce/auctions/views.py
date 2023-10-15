@@ -1,3 +1,6 @@
+from decimal import Decimal
+
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -87,7 +90,17 @@ def create_listing(request):
 @login_required
 def listing_detail(request, id):
     listing = get_object_or_404(Listing, id=id)
-    return render(request, 'auctions/listing_detail.html', {'listing': listing})
+    num_bids = Bid.objects.filter(listing=listing).count()
+    current_price = Bid.objects.filter(
+        listing=listing).order_by('-bid_amount').first()
+    is_highest = current_price.bidder == request.user if current_price else False
+
+    context = {
+        'listing': listing,
+        'num_bids': num_bids,
+        'is_highest': is_highest,
+    }
+    return render(request, 'auctions/listing_detail.html', context)
 
 
 @login_required
@@ -98,3 +111,31 @@ def toggle_watchlist(request, id):
     else:
         request.user.watchlist.add(listing)
     return HttpResponseRedirect(reverse('listing_detail', args=[id]))
+
+
+@login_required
+def make_bid(request, listing_id, user_id):
+    if request.method == 'POST':
+        listing = get_object_or_404(Listing, id=listing_id)
+        user = get_object_or_404(User, id=user_id)
+        bid_amount = request.POST.get('bid_amount')
+
+        # Check if bid amount is provided
+        if bid_amount is None:
+            messages.error(request, 'You must enter a bid amount')
+            return HttpResponseRedirect(reverse('listing_detail', kwargs={'id': listing_id}))
+        else:
+            bid_amount = Decimal(bid_amount)
+
+        # Check if bid amount is higher than current price
+        if bid_amount > listing.current_price:
+            new_bid = Bid(bidder=user, listing=listing,
+                          bid_amount=bid_amount)
+            new_bid.save()
+            return HttpResponseRedirect(reverse('listing_detail', kwargs={'id': listing_id}))
+        else:
+            messages.error(
+                request, 'Your bid must be higher than the current price.')
+            return HttpResponseRedirect(reverse('listing_detail', kwargs={'id': listing_id}))
+    else:
+        return HttpResponseRedirect(reverse('listing_detail', kwargs={'id': listing_id}))
