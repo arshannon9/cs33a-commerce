@@ -185,3 +185,10 @@ def add_comment(request, listing_id):
         return HttpResponseRedirect(reverse('listing_detail', kwargs={'id': listing_id}))
     else:
         return HttpResponseRedirect(reverse('listing_detail', kwargs={'id': listing_id}))
+
+
+@login_required
+def watchlist(request):
+    user = request.user
+    watchlist_listings = user.watchlist.all()
+    return render(request, "auctions/watchlist.html", {"listings": watchlist_listings})

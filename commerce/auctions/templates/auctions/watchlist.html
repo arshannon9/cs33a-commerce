@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="container" id="watchlist">
+        <h2>{{ request.user }}'s Watchlist</h2>
+        <ul id="watchlist-list">
+        {% for listing in listings %}
+            <li>
+                <a href="{% url 'listing_detail' listing.id %}" class="listing-link">
+                    <div class="container">
+                        <img class="listing-thumbnail" src="{{ listing.image }}" alt="{{ listing.title }}">
+                        <div class="listing-info">
+                            <h3>{{ listing.title }}</h3>
+                            <p>{{ listing.description }}</p>
+                            <p>Current price: ${{ listing.current_price }}</p>
+                            <p class="listing-date">Created {{ listing.date_created }}</p>
+                            {% if listing.is_active %}
+                            <p id="listing-active">Active</p>
+                            {% else %}
+                            <p id="listing-inactive">Inactive</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
