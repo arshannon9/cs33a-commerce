@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from auctions.models import Listing, Comment
 
 
+# Form handling the creation of a listing
 class ListingForm(ModelForm):
     class Meta:
         model = Listing
@@ -19,6 +20,7 @@ class ListingForm(ModelForm):
         return image
 
 
+# Form handling the input of a new comment
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

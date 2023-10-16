@@ -14,6 +14,7 @@ from auctions.forms import ListingForm, CommentForm
 
 @login_required
 def index(request):
+    # Retrieve active listings and display them on index page
     listings = Listing.objects.filter(is_active=True)
     return render(request, "auctions/index.html", {"listings": listings})
 
@@ -39,6 +40,7 @@ def login_view(request):
 
 
 def logout_view(request):
+    # Render page indicating that user has logged out
     logout(request)
     return render(request, "auctions/logged_out.html")
 
@@ -72,6 +74,7 @@ def register(request):
 
 @login_required
 def create_listing(request):
+    # Handle the creation of a new listing
     if request.method == 'POST':
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
@@ -89,6 +92,7 @@ def create_listing(request):
 
 @login_required
 def listing_detail(request, id):
+    # Display the details of a listing, including bid and comment forms
     listing = get_object_or_404(Listing, id=id)
     num_bids = Bid.objects.filter(listing=listing).count()
     current_price = Bid.objects.filter(
@@ -107,6 +111,7 @@ def listing_detail(request, id):
 
 @login_required
 def toggle_watchlist(request, id):
+    # Add or remove listing from user watchlist
     listing = get_object_or_404(Listing, id=id)
     if listing in request.user.watchlist.all():
         request.user.watchlist.remove(listing)
@@ -117,6 +122,7 @@ def toggle_watchlist(request, id):
 
 @login_required
 def make_bid(request, listing_id, user_id):
+    # Allows user to make bid on a listing
     if request.method == 'POST':
         listing = get_object_or_404(Listing, id=listing_id)
         user = get_object_or_404(User, id=user_id)
@@ -151,6 +157,7 @@ def make_bid(request, listing_id, user_id):
 
 @login_required
 def close_auction(request, listing_id):
+    # Allows user to close auction only if they own the listing
     if request.method == 'POST':
         listing = get_object_or_404(Listing, id=listing_id)
         user = request.user
@@ -172,6 +179,7 @@ def close_auction(request, listing_id):
 
 @login_required
 def add_comment(request, listing_id):
+    # Adds comment to listing detail page based on user input
     form = CommentForm(request.POST)
     if form.is_valid():
         comment_text = form.cleaned_data.get('comment')
@@ -189,6 +197,7 @@ def add_comment(request, listing_id):
 
 @login_required
 def watchlist(request):
+    # Retrieve the user's watchlist and display on the watchlist page
     user = request.user
     watchlist_listings = user.watchlist.all()
     return render(request, "auctions/watchlist.html", {"listings": watchlist_listings})
@@ -196,6 +205,7 @@ def watchlist(request):
 
 @login_required
 def categories(request):
+    # Retrieve all categories and display on categories page
     categories = Category.objects.all()
     return render(request, "auctions/categories.html", {"categories": categories})
 
@@ -205,7 +215,7 @@ def category_view(request, category_name):
     # Get the category object by name or handle error if not found
     category = get_object_or_404(Category, name=category_name)
 
-    # Filter listings based on the selected category
+    # Filter listings based on the selected category and display on category page
     category_listings = Listing.objects.filter(
         category=category)
 
