@@ -39,6 +39,7 @@ ul.messages {
 .form-group {
     display: flex;
     flex-direction: row;
+    margin-bottom: 5px;
 }
 
 .form-group label {
