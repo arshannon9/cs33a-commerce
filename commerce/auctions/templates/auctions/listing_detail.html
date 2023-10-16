@@ -7,12 +7,12 @@
         {% if listing in user.watchlist.all %}
         <form method="POST" action="{% url 'toggle_watchlist' id=listing.id %}">
             {% csrf_token %}
-            <input type="submit" value="Remove from Watchlist">
+            <input class="btn btn-secondary" type="submit" value="Remove from Watchlist">
         </form>
         {% else %}
         <form method="POST" action="{% url 'toggle_watchlist' id=listing.id %}">
             {% csrf_token %}
-            <input type="submit" value="Add to Watchlist">
+            <input class="btn btn-primary" type="submit" value="Add to Watchlist">
         </form>
         {% endif %} 
         <img id="listing-image" src="{{ listing.image }}" alt="{{ listing.title }}" width="400px">
@@ -30,7 +30,7 @@
                     <i class="bi bi-currency-dollar"></i>
                 </span>
                 <input type="number" id="bid" name="bid_amount" placeholder="Enter dollar amount">
-                <input type="submit" value="Submit Bid">
+                <input class="btn btn-primary" type="submit" value="Submit Bid">
             </div>
         </form>
         <p id="bid-tracker">
@@ -45,7 +45,7 @@
         {% if request.user == listing.listing_owner %}
         <form method="post" action="{% url 'close_auction' listing.id %}">
             {% csrf_token %}
-            <button type="submit">Close Auction</button>
+            <input class="btn btn-primary" type="submit" value="Close Auction">
         </form>
         {% endif %}
         
@@ -91,7 +91,7 @@
             </div>
             <div class="form-group">
                 <span id="button-buffer"></span>
-                <input type="submit" value="Submit Comment">
+                <input class="btn btn-primary" type="submit" value="Submit Comment">
             </div>
         </form>
     </div>
